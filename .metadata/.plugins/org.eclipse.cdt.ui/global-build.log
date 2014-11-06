@@ -1,0 +1,90 @@
+
+**** Clean-only build of configuration Debug for project test2 ****
+
+make clean 
+rm -rf  ./src/test2.o  ./src/test2.d  test2
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project test2 ****
+
+make all 
+Building file: ../src/test2.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/test2.d" -MT"src/test2.d" -o "src/test2.o" "../src/test2.cpp"
+Finished building: ../src/test2.cpp
+ 
+Building target: test2
+Invoking: GCC C++ Linker
+g++  -o "test2"  ./src/test2.o   
+Finished building target: test2
+ 
+
+**** Build Finished ****
+
+**** Clean-only build of configuration Release for project test2 ****
+
+make clean 
+rm -rf  ./src/test2.o  ./src/test2.d  test2
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Release for project test2 ****
+
+make all 
+Building file: ../src/test2.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/test2.d" -MT"src/test2.d" -o "src/test2.o" "../src/test2.cpp"
+Finished building: ../src/test2.cpp
+ 
+Building target: test2
+Invoking: GCC C++ Linker
+g++  -o "test2"  ./src/test2.o   
+Finished building target: test2
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project test2 ****
+
+make all 
+make: `all' に対して行うべき事はありません.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project test2 ****
+
+make all 
+make: `all' に対して行うべき事はありません.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project test2 ****
+
+make all 
+make: `all' に対して行うべき事はありません.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project test2 ****
+
+make all 
+make: `all' に対して行うべき事はありません.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project test2 ****
+
+make all 
+make: `all' に対して行うべき事はありません.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project test2 ****
+
+make all 
+make: `all' に対して行うべき事はありません.
+
+**** Build Finished ****
