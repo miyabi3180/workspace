@@ -2,11 +2,11 @@
 
 require './bot.rb'
 require './BF.rb'
-require "MeCab"
+require './wordcheck.rb'
 
-bot = Bot.new
-mecab = MeCab::Tagger.new()
-
+bot = Bot.new()
+my_id = "@"+bot.name()
+ch = Checker.new()
 
 begin
   bot.timeline.userstream do |status|
@@ -21,49 +21,36 @@ begin
       str_time = Time.now.strftime("[%Y-%m-%d %H:%M]")
  
       # except REPLY TO OTHERS + REACTION TIMELINE
-      # =~ jedge match
       if !(/^@\w*/.match(contents))
-
         puts contents+"\n"
-        node = mecab.parseToNode(contents)
-        while node do
-          surface = node.surface
-          surface.force_encoding('UTF-8')
-          feature = node.feature.force_encoding('UTF-8')
-          part_of_speech = feature.split(',')[0]
-          if part_of_speech == "名詞"
-            puts sprintf("%s\t[%s]", surface, part_of_speech)
-            File.open("word.txt","a") do |file|
-              file.write(surface+"\n")
-            end
-          end
-          node = node.next
-        end
 
-        if contents =~ /みやび/
-          puts "m\n"
+        #fav action
+        if ch.find_word(contents,"favword.txt")
           bot.fav(status_id)
         end
+
+        #reply action
         if contents =~ /まーぼう/
           puts "c\n"
           text = "なんだそのおち\n#{str_time}"
           bot.post(text,twitter_id,status_id)
         end
-        if contents =~ /にゃんこ/
-          puts "n\n"
-          bot.fav(status_id)
-        end
       end
  
       # REPLY TO ME
-      if contents =~ /^@miyabinobot\s*/
-        bot.post("reply"+str_time,nil,nil)
+      if contents =~ /^#{my_id}\s*/
         if contents =~/ほげ/
+          bot.post("reply"+str_time,nil,nil)
           text = "はい\n #{str_time}"
           bot.fav(status_id)
           bot.post(text,twitter_id,status_id)
-        elsif contents =~/^@miyabinobot\sBF\s/
-          text = contents.tr("@miyabinobot\sBF\s","")
+        end
+        if contents =~ /^\sBF\s/
+          bot.post("BF"+str_time,nil,nil)
+          text = contents.tr("#{my_id}","")
+          text = contents.tr("BF","")
+          text = contents.tr("\s","")
+          text = contents.tr("\n","")
           text = BF(text)
           bot.post(text,twitter_id,status_id)
         end

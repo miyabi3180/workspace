@@ -7,6 +7,7 @@ class Bot
   
   def initialize()
     keys = YAML.load_file('./config.yml')
+    @name = keys["my_id"]
  
     @client = Twitter::REST::Client.new do |config|
       config.consumer_key        = keys["api_key"]
@@ -25,6 +26,9 @@ class Bot
  
     @timeline = TweetStream::Client.new
 
+  end
+  def name()
+    @name
   end
 
   def post(text = "",twitter_id,status_id)
