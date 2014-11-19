@@ -16,8 +16,9 @@ def BF(input)
 	limit =input.size()
 	memory=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 	output=Array.new()
+	time=0
 
-	while i<limit
+	while i<limit&&time<10000
 
 		if input[i]=='>'
 			if p<15
@@ -78,17 +79,21 @@ def BF(input)
 			c+=1
 
 		elsif input[i]=='\n'
+			puts "enter"
 
 		elsif input[i]=='\s'
+			puts "space"
 		
 		else
 			i=limit
 			e=1
 		end 
 		i+=1
+		time+=1
 	end
+	
 
-	if e==0
+	if e==0 && time < 10000
 		i=0
 		limit=output.size()
 		o_str=''

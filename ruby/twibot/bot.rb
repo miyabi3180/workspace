@@ -49,5 +49,11 @@ class Bot
       @client.retweet(status_id)
     end
   end
-  
+
+  def favopen(user)
+    if user != nil
+      puts @client.home_timeline()
+    end
+  end
+
 end

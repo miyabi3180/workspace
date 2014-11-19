@@ -1,9 +1,12 @@
 # coding:utf-8
+
 require './bot.rb'
 require './BF.rb'
+require "MeCab"
+
 bot = Bot.new
-#str_time = Time.now.strftime("[%Y-%m-%d %H:%M]")
-#bot.post("start"+str_time,nil,nil)
+mecab = MeCab::Tagger.new()
+
 
 begin
   bot.timeline.userstream do |status|
@@ -20,10 +23,25 @@ begin
       # except REPLY TO OTHERS + REACTION TIMELINE
       # =~ jedge match
       if !(/^@\w*/.match(contents))
+
         puts contents+"\n"
+        node = mecab.parseToNode(contents)
+        while node do
+          surface = node.surface
+          surface.force_encoding('UTF-8')
+          feature = node.feature.force_encoding('UTF-8')
+          part_of_speech = feature.split(',')[0]
+          if part_of_speech == "名詞"
+            puts sprintf("%s\t[%s]", surface, part_of_speech)
+            File.open("word.txt","a") do |file|
+              file.write(surface+"\n")
+            end
+          end
+          node = node.next
+        end
+
         if contents =~ /みやび/
           puts "m\n"
-          text = "ほい\n#{str_time}"
           bot.fav(status_id)
         end
         if contents =~ /まーぼう/
