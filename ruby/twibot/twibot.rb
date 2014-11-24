@@ -19,13 +19,14 @@ begin
     # except RT
     if !contents.index("RT")
       str_time = Time.now.strftime("[%Y-%m-%d %H:%M]")
+      title = "log"+Time.now.strftime("%Y-%m-%d")+".txt"
  
       # except REPLY TO OTHERS + REACTION TIMELINE
       if !(/^@\w*/.match(contents))
         puts contents+"\n"
 
         #fav action
-        if ch.find_word(contents,"favword.txt")
+        if ch.find_word(contents,title,"favword.txt")
           bot.fav(status_id)
         end
 
@@ -60,13 +61,10 @@ begin
   sleep 2
   end
 rescue => em
-  puts Time.now
   p em
   sleep 2
   retry
  
 rescue Interrupt
-  #str_time = Time.now.strftime("[%Y-%m-%d %H:%M]")
-  #bot.post("end"+str_time,nil,nil)
   exit 1
 end

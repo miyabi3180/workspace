@@ -1,11 +1,26 @@
 #coding: utf-8
 require "MeCab"
 
+#this code uses mecab
+
+#Checker.find_word(text,path)
+#->make node of "text" and save each words to "path" file if it's noun
+
+#Checker.clean_word(path)
+#->delete overlap words and arrange these.
+#ex)hoge 4   this means word "hoge" appeared 4 times.
+
+#Checker.find_max(path)
+#return maxword's length, maxword's times
+
+#Checker.find_min(path)
+#return minword's length, minword's times
+
 class Checker
 	def initialize()
 		@mecab = MeCab::Tagger.new()
 	end
-	def find_word(text,path)
+	def find_word(text,log_path,keyword_path)
 		target = Array.new()
 		n_t = 0
 		node = @mecab.parseToNode(text)
@@ -18,7 +33,7 @@ class Checker
   				target[n_t] = surface
   				n_t+=1
     				puts sprintf("%s\t[%s]", surface, part_of_speech)
-    				File.open("wordlog.txt","a") do |file|
+    				File.open(log_path,"a") do |file|
       				file.write(surface+"\n")
     				end
   			end
@@ -26,7 +41,7 @@ class Checker
 		end
 
 		for i in 0..(n_t-1)
-			File.open(path,"r") do |file|
+			File.open(keyword_path,"r") do |file|
 				file.each_line do |line|
 					if line.chomp() == target[i]
 						puts "match"
@@ -37,13 +52,47 @@ class Checker
 		end
 		return false
 	end
+	def find_max(path)
+		max_length=0
+		max_times=0
+		File.open(path,"r") do |file|
+			file.each_line do |line|
+				line=line.chomp()
+				line=line.split("\s")
+				if line[1].to_i>max_times 
+					max_times=line[1].to_i
+					max_length=line[0].size()
+				end		
+			end
+		end
+		puts max_length
+		puts max_times
+		[max_length,max_times]
+	end
 	
-	def clean_word(path)
+	def find_min(path)
+		min_length=100
+		min_times=100
+		File.open(path,"r") do |file|
+			file.each_line do |line|
+				line=line.chomp()
+				line=line.split("\s")
+				if line[1].to_i<=min_times 
+					min_times=line[1].to_i
+					min_length=line[0].size()
+				end		
+			end
+		end
+		puts min_length
+		puts min_times
+		[min_length,min_times]
+	end
+	def clean_word(log_path,output_path)
 		baf = Array.new()
 		n=0
 		count=0
-		return nil if path == nil
-		File.open(path,"r") do |file|
+		return nil if log_path == nil || output_path == nil
+		File.open(log_path,"r") do |file|
 			file.each_line do |line|
 				line=line.chomp()
 				if line.ascii_only? == true || line.size()>10
@@ -81,9 +130,9 @@ class Checker
 
 		end
 
-		File.open("clean.txt","w") do |file|
+		File.open(output_path,"w") do |file|
 			i=0
-      		while baf[i]!=""
+      		while baf[i]!=""&&baf[i]!=nil
       			file.write(baf[i]+"\n")
       			i+=1
       		end

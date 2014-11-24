@@ -41,6 +41,16 @@ class Bot
         puts "#{text}"
       end
   end
+  def post_pic(text = "",media,twitter_id,status_id)
+    if status_id != nil
+        rep_text = "@#{twitter_id} #{text}"
+        @client.update_with_media(rep_text,File.open(media),{:in_reply_to_status_id => status_id})
+        puts "#{rep_text}"
+      else
+        @client.update_with_media(text,File.open(media))
+        puts "#{text}"
+      end
+  end
  
   def fav(status_id)
     if status_id != nil
